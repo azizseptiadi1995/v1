@@ -5,40 +5,60 @@ import Button2 from 'src/component/Button';
 import CustomTextInput from 'src/component/CustomTextInput';
 import TypographyText from 'src/component/TypographyText';
 import Margin from 'src/component/margin';
+
 const GetOTPPageComponent = (): JSX.Element => {
-  const [resultDO, setResultDO] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [otp, setOtp] = useState('');
-  const [otpDO, setOtpDO] = useState('');
+  const [resultDO, setResultDO] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [otp, setOtp] = useState<string>('');
+  const [otpDO, setOtpDO] = useState<string>('');
+
   useEffect(() => {
     setResultDO('');
   }, []);
 
-  function hitServices_OTP(trx: string, token: string) {
-    setLoading(true)
+  function hitServices_OTP(trx: string, token: string): void {
+    setLoading(true);
     Services(token, trx, 'StressTestServices')
-      .then(result => {
-        setLoading(false)
-        setResultDO(trx == 'getotp' ? 'BERHASIL RES INI OTP PMOB : ' + result : 'BERHASIL RES INI OTP DO : ' + result)
+      .then((result) => {
+        setLoading(false);
+        setResultDO(
+          trx === 'getotp'
+            ? 'BERHASIL RES INI OTP PMOB : ' + result
+            : 'BERHASIL RES INI OTP DO : ' + result
+        );
       })
-      .catch(error => {
-        setLoading(false)
-        setResultDO(trx == 'getotp' ? 'GAGAL RES INI OTP PMOB : ' + error.toString() : 'GAGAL RES INI OTP DO : ' + error.toString())
+      .catch((error) => {
+        setLoading(true);
+        setResultDO(
+          trx === 'getotp'
+            ? 'GAGAL RES INI OTP PMOB : ' + error.toString()
+            : 'GAGAL RES INI OTP DO : ' + error.toString()
+        );
       });
   }
 
   return (
     <View style={styles.container}>
       <TypographyText>Input OTP</TypographyText>
-      <CustomTextInput placeholder={'Input Challange Code TRX'} keyboardType="numeric" onChangeText={text => setOtp(text)} value={otp} style={styles.input} />
-      <Button2 title='SUBMIT OTP PMOBX' onPress={() => hitServices_OTP('getotp', otp)} />
+      <CustomTextInput
+        placeholder={'Input Challange Code TRX'}
+        keyboardType="numeric"
+        onChangeText={(text) => setOtp(text)}
+        value={otp}
+        style={styles.input}
+      />
+      <Button2 title="SUBMIT OTP PMOBX" onPress={() => hitServices_OTP('getotp', otp)} />
       <Margin param={40} />
       <TypographyText>Input OTP DO</TypographyText>
-      <CustomTextInput placeholder={'Input Challange Code DO'} keyboardType="numeric" onChangeText={text => setOtpDO(text)} value={otpDO} style={styles.input} />
-      <Button2 title='SUBMIT OTP DO' onPress={() => hitServices_OTP('getotpdo', otpDO)} />
-      {loading == true ? (
-        <ActivityIndicator size="large" color="#00ff00" />
-      ) : null}
+      <CustomTextInput
+        placeholder={'Input Challange Code DO'}
+        keyboardType="numeric"
+        onChangeText={(text) => setOtpDO(text)}
+        value={otpDO}
+        style={styles.input}
+      />
+      <Button2 title="SUBMIT OTP DO" onPress={() => hitServices_OTP('getotpdo', otpDO)} />
+      {loading && <ActivityIndicator size="large" color="#00ff00" />}
       <TypographyText>{resultDO}</TypographyText>
     </View>
   );
@@ -64,3 +84,4 @@ const styles = StyleSheet.create({
 });
 
 export const GetOTPPage = memo(GetOTPPageComponent);
+
