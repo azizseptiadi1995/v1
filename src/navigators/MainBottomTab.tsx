@@ -15,6 +15,9 @@ const { Navigator, Screen } = createBottomTabNavigator<MainBottomTabParamList>()
 export type MainBottomTabParamList = {
   home: undefined;
   settings: undefined;
+  unlinkDevice: undefined;
+  OTP: undefined;
+  ChangeSoftokenPage: undefined;
 };
 
 export type MainBottomTabNavigationProp<RouteName extends keyof MainBottomTabParamList> =
