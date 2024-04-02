@@ -1,15 +1,13 @@
 import React, { memo, useEffect, useState } from 'react';
-import { Button, Dimensions, StyleSheet, Text, View } from 'react-native';
-import styled from 'styled-components';
-import { TextInput } from 'react-native-paper';
-import { Services, APIURL } from 'src/controller/OTP';
-
-const { width } = Dimensions.get('window');
-const Title = styled(Text)`
-  color: ${(props) => props.theme.colors.text};
-`;
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { Services } from 'src/controller/OTP';
+import Button2 from 'src/component/Button';
+import CustomTextInput from 'src/component/CustomTextInput';
+import TypographyText from 'src/component/TypographyText';
+import Margin from 'src/component/margin';
 const GetOTPPageComponent = (): JSX.Element => {
   const [resultDO, setResultDO] = useState('');
+  const [loading, setLoading] = useState(false);
   const [otp, setOtp] = useState('');
   const [otpDO, setOtpDO] = useState('');
   useEffect(() => {
@@ -17,35 +15,31 @@ const GetOTPPageComponent = (): JSX.Element => {
   }, []);
 
   function hitServices_OTP(trx: string, token: string) {
-    try {
-      fetch(APIURL(), Services(token, trx))
-        .then(response => response.text())
-        .then(result => setResultDO(result))
-        .catch(error => setResultDO(error));
-    } catch (e) {
-      setResultDO(`${e} action gagal`);
-    }
+    setLoading(true)
+    Services(token, trx, 'StressTestServices')
+      .then(result => {
+        setLoading(false)
+        setResultDO(trx == 'getotp' ? 'BERHASIL RES INI OTP PMOB : ' + result : 'BERHASIL RES INI OTP DO : ' + result)
+      })
+      .catch(error => {
+        setLoading(false)
+        setResultDO(trx == 'getotp' ? 'GAGAL RES INI OTP PMOB : ' + error.toString() : 'GAGAL RES INI OTP DO : ' + error.toString())
+      });
   }
 
   return (
     <View style={styles.container}>
-      <Title>{'Input OTP'}</Title>
-      <TextInput
-        style={styles.input}
-        keyboardType="numeric"
-        value={otp}
-        onChangeText={text => setOtp(text)}
-      />
-      <Button title="Submit" onPress={() => hitServices_OTP('getotp', otp)} />
-      <Title>{'Input OTP DO'}</Title>
-      <TextInput
-        style={styles.input}
-        keyboardType="numeric"
-        value={otpDO}
-        onChangeText={text => setOtpDO(text)}
-      />
-      <Button title="Submit" onPress={() => hitServices_OTP('getotpdo', otpDO)} />
-      <Title>{resultDO}</Title>
+      <TypographyText>Input OTP</TypographyText>
+      <CustomTextInput placeholder={'Input Challange Code TRX'} keyboardType="numeric" onChangeText={text => setOtp(text)} value={otp} style={styles.input} />
+      <Button2 title='SUBMIT OTP PMOBX' onPress={() => hitServices_OTP('getotp', otp)} />
+      <Margin param={40} />
+      <TypographyText>Input OTP DO</TypographyText>
+      <CustomTextInput placeholder={'Input Challange Code DO'} keyboardType="numeric" onChangeText={text => setOtpDO(text)} value={otpDO} style={styles.input} />
+      <Button2 title='SUBMIT OTP DO' onPress={() => hitServices_OTP('getotpdo', otpDO)} />
+      {loading == true ? (
+        <ActivityIndicator size="large" color="#00ff00" />
+      ) : null}
+      <TypographyText>{resultDO}</TypographyText>
     </View>
   );
 };
@@ -58,8 +52,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   input: {
-    width: width * 0.8,
     marginBottom: 20,
+    maxHeight: '60%',
+    width: '50%',
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderColor: 'gray',

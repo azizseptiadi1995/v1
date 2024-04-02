@@ -1,8 +1,8 @@
 'use strict';
-import {ThemeType} from 'src/theme';
-import {AppAction} from 'src/types/actions';
-import {createReducer} from 'typesafe-actions';
-import {setAppTheme} from './actions';
+import { ThemeType } from 'src/theme';
+import { AppAction } from 'src/types/actions';
+import { createReducer } from 'typesafe-actions';
+import { setAppTheme } from './actions';
 
 export interface AppState {
   theme: ThemeType;
@@ -14,5 +14,5 @@ const initialState: AppState = {
 
 export const appReducer = createReducer<AppState, AppAction>(initialState).handleAction(
   setAppTheme,
-  (state, {payload: theme}) => ({...state, theme}),
+  (state: any, { payload: theme }: any) => ({ ...state, theme }),
 );

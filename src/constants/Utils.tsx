@@ -22,6 +22,13 @@ export const Colors = {
 };
 export const IS_IOS = Platform.OS === 'ios';
 export const IS_ANDROID = Platform.OS === 'android';
+export function getUrl(response: string) {
+    try {
+        let URL = 'http://192.168.7.61:8081/services/BotService/';
+        return URL + response;
+    } catch (error) {
+    }
+}
 
 
 

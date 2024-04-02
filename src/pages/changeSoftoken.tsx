@@ -1,41 +1,56 @@
 import React, { memo, useEffect } from 'react';
-import { Button, Dimensions, StyleSheet, Text, View } from 'react-native';
-import styled from 'styled-components';
-import { Services, APIURL } from 'src/controller/ChangeSoftoken';
+import { Dimensions, StyleSheet, View, ActivityIndicator } from 'react-native';
+import { Services } from 'src/controller/ChangeSoftoken';
+import Button2 from 'src/component/Button';
+import TypographyText from 'src/component/TypographyText';
+import Margin from 'src/component/margin';
 const { width } = Dimensions.get('window');
-const Title = styled(Text)`
-  color: ${(props) => props.theme.colors.text};
-`;
+
 const ChangeSoftokenPageComponent = (): JSX.Element => {
-  const [result, setResult] = React.useState("");
+  const [result, setResult] = React.useState<string>("");
+  const [loading, setLoading] = React.useState<boolean>(false);
   useEffect(() => {
-    setResult('')
+    setResult('');
   }, []);
-  function hitServices_ChangeSoftoken(type: string) {
-    fetch(APIURL(), Services(type))
-      .then(response => response.text())
-      .then(result => setResult('SOFTOKEN ' + type + ' ' + result))
-      .catch(error => setResult(error));
+  function hitServices_ChangeSoftoken(type: string): void {
+    setLoading(true)
+    Services(type, 'StressTestServices')
+      .then(result => {
+        setLoading(false)
+        setResult(result);
+      })
+      .catch(error => {
+        setLoading(false)
+        setResult(error.toString());
+      });
   }
-  useEffect
+
   return (
     <View style={styles.container}>
-      <Title>{'CHANGE SOFTOKEN'}</Title>
-      <Button title="SOFTOKEN Y" onPress={() => hitServices_ChangeSoftoken('Y')} />
+      <TypographyText>CHANGE SOFTOKEN</TypographyText>
+      <Margin param={40} />
+      <Button2 style={styles.button} title='SOFTOKEN AKTIFKAN' onPress={() => hitServices_ChangeSoftoken('Y')} />
       <View>
-        <Title>{''}</Title>
+        <Margin param={40} />
       </View>
-      <Button title="SOFTOKEN N" onPress={() => hitServices_ChangeSoftoken('N')} />
-      <Title>{result}</Title>
+      <Button2 style={styles.button} title='SOFTOKEN NONAKTIFKAN' onPress={() => hitServices_ChangeSoftoken('N')} />
+      {loading == true ? (
+        <ActivityIndicator size="large" color="#00ff00" />
+      ) : null}
+      <TypographyText>{result}</TypographyText>
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 20,
+  },
+  button: {
+    width: '60%',
   },
   input: {
     width: width * 0.8,
@@ -49,3 +64,4 @@ const styles = StyleSheet.create({
 });
 
 export const ChangeSoftokenPage = memo(ChangeSoftokenPageComponent);
+

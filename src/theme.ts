@@ -1,6 +1,6 @@
 import { StatusBarStyle } from 'react-native';
 // import { Colors } from 'src/constants/colors';
-import { Colors } from 'src/constants/utils';
+import { Colors } from 'src/constants/Utils';
 
 const CommonTheme = {
   gridUnit: 4,
