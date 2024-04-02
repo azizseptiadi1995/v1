@@ -1,8 +1,6 @@
-import React, { memo, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { memo, useEffect } from 'react';
 import { Button, Dimensions, StyleSheet, Text, View } from 'react-native';
 import styled from 'styled-components';
-import { TextInput } from 'react-native-paper';
 import { Services, APIURL } from 'src/controller/ChangeSoftoken';
 const { width } = Dimensions.get('window');
 const Title = styled(Text)`
@@ -10,7 +8,6 @@ const Title = styled(Text)`
 `;
 const ChangeSoftokenPageComponent = (): JSX.Element => {
   const [result, setResult] = React.useState("");
-  const [userID, setuserID] = useState('');
   useEffect(() => {
     setResult('')
   }, []);
