@@ -7,41 +7,50 @@ import Margin from 'src/component/margin';
 
 const { width } = Dimensions.get('window');
 
-const ChangeSoftokenPageComponent = (): JSX.Element => {
-  const [result, setResult] = React.useState<string>('');
-  const [loading, setLoading] = React.useState<boolean>(false);
+interface ChangeSoftokenPageProps { }
 
-  useEffect(() => {
-    setResult('');
-  }, []);
+class ChangeSoftokenPageComponent extends React.Component<ChangeSoftokenPageProps> {
+  state = {
+    result: '',
+    loading: false,
+  };
 
-  function hitServices_ChangeSoftoken(type: string): void {
-    setLoading(true);
-    Services(type, 'StressTestServices')
-      .then((result) => {
-        setLoading(false);
-        setResult(result);
-      })
-      .catch((error) => {
-        setLoading(false);
-        setResult(error.toString());
-      });
+  componentDidMount() {
+    this.setState({ result: '' });
   }
 
-  return (
-    <View style={styles.container}>
-      <TypographyText>CHANGE SOFTOKEN</TypographyText>
-      <Margin param={40} />
-      <Button2 style={styles.button} title="SOFTOKEN AKTIFKAN" onPress={() => hitServices_ChangeSoftoken('Y')} />
-      <View>
+  hitServices_ChangeSoftoken = (type: string): void => {
+    this.setState({ loading: true });
+    Services(type, 'StressTestServices')
+      .then((result: any) => {
+        this.setState({ loading: false, result: String(result) });
+      })
+      .catch((error: Error) => {
+        this.setState({ loading: false, result: error.toString() });
+      });
+  };
+
+  render() {
+    const { result, loading } = this.state;
+    return (
+      <View style={styles.container}>
+        <TypographyText>CHANGE SOFTOKEN</TypographyText>
         <Margin param={40} />
+        <Button2 style={styles.button} title="SOFTOKEN AKTIFKAN" onPress={() => this.hitServices_ChangeSoftoken('Y')} />
+        <View>
+          <Margin param={40} />
+        </View>
+        <Button2
+          style={styles.button}
+          title="SOFTOKEN NONAKTIFKAN"
+          onPress={() => this.hitServices_ChangeSoftoken('N')}
+        />
+        {loading && <ActivityIndicator size="large" color="#00ff00" />}
+        <TypographyText>{result}</TypographyText>
       </View>
-      <Button2 style={styles.button} title="SOFTOKEN NONAKTIFKAN" onPress={() => hitServices_ChangeSoftoken('N')} />
-      {loading && <ActivityIndicator size="large" color="#00ff00" />}
-      <TypographyText>{result}</TypographyText>
-    </View>
-  );
-};
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -65,4 +74,3 @@ const styles = StyleSheet.create({
 });
 
 export const ChangeSoftokenPage = memo(ChangeSoftokenPageComponent);
-

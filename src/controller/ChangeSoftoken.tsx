@@ -1,5 +1,5 @@
 import { getUrl } from 'src/constants/Utils';
-export const Services = (type: string, url: string): Promise<string> => {
+const Services = (type: string, url: string) => {
     return new Promise((resolve, reject) => {
         try {
             let hitService = getUrl(url);
@@ -16,11 +16,11 @@ export const Services = (type: string, url: string): Promise<string> => {
                 redirect: 'follow'
             };
             fetch(hitService as string, requestOptions)
-                .then((response: Response) => response.text())
-                .then((result: string) => {
+                .then(response => response.text())
+                .then(result => {
                     resolve(result);
                 })
-                .catch((error: Error) => {
+                .catch(error => {
                     reject(error);
                 });
         } catch (e) {
@@ -28,4 +28,9 @@ export const Services = (type: string, url: string): Promise<string> => {
         }
     });
 }
+
+export { Services };
+
+
+
 

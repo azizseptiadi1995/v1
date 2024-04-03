@@ -1,5 +1,3 @@
-
-
 import { getUrl } from 'src/constants/Utils';
 export const Services = (userID: string, url: string): Promise<string> => {
     return new Promise((resolve, reject) => {

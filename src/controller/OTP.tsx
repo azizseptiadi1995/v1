@@ -1,5 +1,5 @@
 import { getUrl } from 'src/constants/Utils';
-export const Services = (userID: string, type: string, url: string): Promise<string> => {
+const Services = (userID: string, type: string, url: string): Promise<string> => {
     return new Promise((resolve, reject) => {
         try {
             let hitService = getUrl(url);
@@ -9,7 +9,6 @@ export const Services = (userID: string, type: string, url: string): Promise<str
                 "type": type,
                 "challenge": userID,
             });
-
             let requestOptions = {
                 method: 'POST',
                 headers: myHeaders,
@@ -29,7 +28,7 @@ export const Services = (userID: string, type: string, url: string): Promise<str
         }
     });
 }
-
+export { Services };
 
 
 

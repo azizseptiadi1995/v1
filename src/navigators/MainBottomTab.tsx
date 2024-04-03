@@ -13,11 +13,11 @@ import { ChangeSoftokenPage } from 'src/pages/changeSoftoken';
 const { Navigator, Screen } = createBottomTabNavigator<MainBottomTabParamList>();
 
 export type MainBottomTabParamList = {
-  home: undefined;
-  settings: undefined;
-  unlinkDevice: undefined;
+  Home: undefined;
+  Settings: undefined;
+  UnlinkDevice: undefined;
   OTP: undefined;
-  ChangeSoftokenPage: undefined;
+  ChangeSoftoken: undefined;
 };
 
 export type MainBottomTabNavigationProp<RouteName extends keyof MainBottomTabParamList> =
@@ -47,18 +47,18 @@ export const MainBottomTab = () => {
           borderTopColor: theme.colors.background,
         },
         tabBarLabelStyle: {
-          textDecorationLine: 'underline',
-          color: 'red',
+          color: theme.colors.text,
+          fontSize: 18,
         },
       }}
     >
       <Screen
-        name="unlinkDevice"
+        name="UnlinkDevice"
         component={UnlinkDevicesPage}
         options={{
           tabBarLabel: t('unlinkDevice'),
           tabBarIcon: ({ color, size }) => (
-            <Icon type="antdesign" name="unlinkDevice" size={size} color={color} />
+            <Icon type="antdesign" name="unlink" size={size} color={color} />
           ),
         }}
       />
@@ -68,17 +68,17 @@ export const MainBottomTab = () => {
         options={{
           tabBarLabel: t('OTP'),
           tabBarIcon: ({ color, size }) => (
-            <Icon type="antdesign" name="GetOTPPage" size={size} color={color} />
+            <Icon type="antdesign" name="message1" size={size} color={color} />
           ),
         }}
       />
       <Screen
-        name="ChangeSoftokenPage"
+        name="ChangeSoftoken"
         component={ChangeSoftokenPage}
         options={{
-          tabBarLabel: 'ChangeSoftokenPage',
+          tabBarLabel: t('changeSoftoken'),
           tabBarIcon: ({ color, size }) => (
-            <Icon type="antdesign" name="ChangeSoftokenPage" size={size} color={color} />
+            <Icon type="antdesign" name="lock" size={size} color={color} />
           ),
         }}
       />

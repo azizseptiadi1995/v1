@@ -10,13 +10,12 @@ import { themeTypeSelector } from './modules/app/selectors';
 import { useColorScheme } from 'react-native';
 import { Themes } from './theme';
 
-
 const AppThemeProvider = ({ children }: { children: ReactNode | ReactNode[] }) => {
   const userSelectedThemeType = useSelector(themeTypeSelector);
   const systemThemeType = useColorScheme();
   const themeType =
     userSelectedThemeType === 'system' && systemThemeType ? systemThemeType : userSelectedThemeType;
-  const theme = Themes[themeType];
+  const theme = Themes[themeType as keyof typeof Themes]; // Add a fallback or handle undefined
 
   return (
     <ThemeProvider theme={theme}>

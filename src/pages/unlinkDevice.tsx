@@ -8,45 +8,51 @@ import Margin from 'src/component/margin';
 
 const { width } = Dimensions.get('screen');
 
-const UnlinkDevicesPageComponent: React.FC = () => {
-  const [result, setResult] = useState<string>('');
-  const [userID, setUserID] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
+interface UnlinkDevicesPageProps { }
 
-  useEffect(() => {
-    setResult('');
-  }, []);
+class UnlinkDevicesPageComponent extends React.Component<UnlinkDevicesPageProps> {
+  state = {
+    result: '',
+    userID: '',
+    loading: false,
+  };
 
-  const hitServices_UnlinkDevices = () => {
-    setLoading(true);
+  componentDidMount() {
+    this.setState({ result: '' });
+  }
+
+  hitServices_UnlinkDevices = () => {
+    const { userID } = this.state;
+    this.setState({ loading: true });
     Services(userID, 'StressTestServices')
-      .then((result) => {
-        setLoading(false);
-        setResult(result);
+      .then((result: string) => {
+        this.setState({ loading: false, result });
       })
-      .catch((error) => {
-        setLoading(false);
-        setResult(error.toString());
+      .catch((error: Error) => {
+        this.setState({ loading: false, result: error.toString() });
       });
   };
 
-  return (
-    <View style={styles.container}>
-      <TypographyText>unlinkDevice</TypographyText>
-      <Margin param={20} />
-      <CustomTextInput
-        placeholder={'Input User ID'}
-        keyboardType={'default'}
-        onChangeText={(text) => setUserID(text)}
-        value={userID}
-        style={styles.input}
-      />
-      <TypographyText>{result}</TypographyText>
-      {loading && <ActivityIndicator size="large" color="#00ff00" />}
-      <Button2 title="Unlink Devices" onPress={hitServices_UnlinkDevices} />
-    </View>
-  );
-};
+  render() {
+    const { result, userID, loading } = this.state;
+    return (
+      <View style={styles.container}>
+        <TypographyText>unlinkDevice</TypographyText>
+        <Margin param={20} />
+        <CustomTextInput
+          placeholder={'Input User ID'}
+          keyboardType={'default'}
+          onChangeText={(text: string) => this.setState({ userID: text })}
+          value={userID}
+          style={styles.input}
+        />
+        <TypographyText>{result}</TypographyText>
+        {loading && <ActivityIndicator size="large" color="#00ff00" />}
+        <Button2 title="Unlink Devices" onPress={this.hitServices_UnlinkDevices} />
+      </View>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -68,4 +74,3 @@ const styles = StyleSheet.create({
 });
 
 export const UnlinkDevicesPage = memo(UnlinkDevicesPageComponent);
-
