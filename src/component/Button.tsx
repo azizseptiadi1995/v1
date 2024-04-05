@@ -1,14 +1,15 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, TouchableOpacityProps } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, TouchableOpacityProps, TextStyle } from 'react-native';
 
 interface ButtonProps extends TouchableOpacityProps {
     title: string;
+    textStyle?: TextStyle;
 }
 
-const Button: React.FC<ButtonProps> = ({ title, style, ...props }) => {
+const Button: React.FC<ButtonProps> = ({ title, style, textStyle, ...props }) => {
     return (
         <TouchableOpacity style={[styles.button, style]} {...props}>
-            <Text style={styles.buttonText}>{title}</Text>
+            <Text style={[styles.buttonText, textStyle]}>{title}</Text>
         </TouchableOpacity>
     );
 };

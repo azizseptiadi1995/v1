@@ -9,6 +9,7 @@ import { AppStackParamList } from 'src/navigators/AppStack';
 import { UnlinkDevicesPage } from 'src/pages/unlinkDevice';
 import { GetOTPPage } from 'src/pages/GetOTP';
 import { ChangeSoftokenPage } from 'src/pages/changeSoftoken';
+import { ChartPage } from 'src/pages/Chart';
 
 const { Navigator, Screen } = createBottomTabNavigator<MainBottomTabParamList>();
 
@@ -18,6 +19,7 @@ export type MainBottomTabParamList = {
   UnlinkDevice: undefined;
   OTP: undefined;
   ChangeSoftoken: undefined;
+  Chart: undefined;
 };
 
 export type MainBottomTabNavigationProp<RouteName extends keyof MainBottomTabParamList> =
@@ -48,7 +50,7 @@ export const MainBottomTab = () => {
         },
         tabBarLabelStyle: {
           color: theme.colors.text,
-          fontSize: 18,
+          fontSize: 16,
         },
       }}
     >
@@ -58,7 +60,7 @@ export const MainBottomTab = () => {
         options={{
           tabBarLabel: t('unlinkDevice'),
           tabBarIcon: ({ color, size }) => (
-            <Icon type="antdesign" name="unlink" size={size} color={color} />
+            <Icon type="antdesign" name="mobile1" size={size} color={color} />
           ),
         }}
       />
@@ -78,7 +80,17 @@ export const MainBottomTab = () => {
         options={{
           tabBarLabel: t('changeSoftoken'),
           tabBarIcon: ({ color, size }) => (
-            <Icon type="antdesign" name="lock" size={size} color={color} />
+            <Icon type="antdesign" name="export2" size={size} color={color} />
+          ),
+        }}
+      />
+      <Screen
+        name="Chart"
+        component={ChartPage}
+        options={{
+          tabBarLabel: 'Chart',
+          tabBarIcon: ({ color, size }) => (
+            <Icon type="antdesign" name="barchart" size={size} color={color} />
           ),
         }}
       />
