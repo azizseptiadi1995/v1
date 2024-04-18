@@ -21,9 +21,11 @@ const Services = (type: string, url: string) => {
                     resolve(result);
                 })
                 .catch(error => {
+                    console.log(error)
                     reject(error);
                 });
         } catch (e) {
+            console.log(e)
             reject(e);
         }
     });
