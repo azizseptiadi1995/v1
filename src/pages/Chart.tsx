@@ -4,10 +4,10 @@ import Button2 from 'src/component/Button';
 import TypographyText from 'src/component/TypographyText';
 import { LineChart as LineChart1 } from "react-native-chart-kit";
 import { LineChart as LineChart2, Grid as Grid, YAxis as YAxis } from 'react-native-svg-charts';
-import { PieChart } from 'react-native-svg-charts';
 import { handle6BulanData } from 'src/controller/Chart';
 import { BarChart, LineChart as LineChartgiftedcharts, PieChart as PieChart2, PopulationPyramid } from "react-native-gifted-charts";
-import { ECharts } from "react-native-echarts-wrapper";
+import { Chart, VerticalAxis, HorizontalAxis, Line } from 'react-native-responsive-linechart'
+
 
 import Margin from 'src/component/margin';
 
@@ -78,7 +78,7 @@ class ChartPageComponent extends React.Component<{}, ChartPageState> {
                                         backgroundGradientTo: '#efefef',
                                         decimalPlaces: 0,
                                         color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                                        labelColor: (opacity = 1) => `red`,
+                                        labelColor: (opacity = 1) => `green`,
                                         style: {
                                             borderRadius: 0
                                         }
@@ -136,32 +136,45 @@ class ChartPageComponent extends React.Component<{}, ChartPageState> {
 
 
                 ) : (
-                    <View style={{ flex: 1 }}>
-                        <ECharts
-                            option={{
-                                xAxis: {
-                                    type: "category",
-                                    data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-                                },
-                                yAxis: {
-                                    type: "value"
-                                },
-                                series: [
-                                    {
-                                        data: [820, 932, 901, 934, 1290, 1330, 1320],
-                                        type: "line"
-                                    }
-                                ]
-                            }}
-                            backgroundColor="rgba(93, 169, 81, 0.3)"
+                    <Chart
+                        style={{ height: 300, width: '90%', backgroundColor: '#fff', borderRadius: 10 }}
+                        xDomain={{ min: -2, max: 10 }}
+                        yDomain={{ min: -2, max: 20 }}
+                        padding={{ left: 20, top: 10, bottom: 20, right: 10 }}
+                    >
+                        <VerticalAxis tickCount={6} theme={{ labels: { label: { color: '#333', fontSize: 10 } } }} />
+                        <HorizontalAxis tickCount={5} theme={{ labels: { label: { color: '#333', fontSize: 10 } } }} />
+                        <Line
+                            data={[
+                                { x: -2, y: 1 },
+                                { x: -1, y: 0 },
+                                { x: 8, y: 13 },
+                                { x: 9, y: 11.5 },
+                                { x: 10, y: 12 }
+                            ]}
+                            smoothing="none"
+                            theme={{ stroke: { color: 'red', width: 2 } }}
                         />
-                    </View>
+                        <Line
+                            data={[
+                                { x: -2, y: 15 },
+                                { x: -1, y: 10 },
+                                { x: 0, y: 12 },
+                                { x: 1, y: 7 },
+                                { x: 8, y: 12 },
+                                { x: 9, y: 13.5 },
+                                { x: 10, y: 18 }
+                            ]}
+                            smoothing="bezier"
+                            theme={{ stroke: { color: 'blue', width: 2 } }}
+                        />
+                    </Chart>
                 )}
 
                 <View style={styles.buttonContainer}>
 
                     <ScrollView horizontal>
-                        {['react-native-chart-kit', 'react-native-gifted-charts', 'react-native-echarts-wrapper'].map((buttonType, index) => (
+                        {['react-native-chart-kit', 'react-native-gifted-charts', 'react-native-responsive-linechart'].map((buttonType, index) => (
                             <React.Fragment key={index}>
                                 <Button2
                                     style={[styles.button, selectedButton === buttonType ? styles.selectedButton : null]}
@@ -205,7 +218,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     selectedButton: {
-        backgroundColor: 'grey',
+        backgroundColor: 'green',
     },
     selectedButtonText: {
         color: 'white',
